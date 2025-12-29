@@ -29,6 +29,15 @@ Esses insights capacitam os tomadores de decisão com métricas de negócios ess
 
 ---
 
+## 🛠️ Como Executar o Projeto
+
+1. **Clonar o repositório:** `git clone https://github.com/seu-usuario/nome-do-repo.git`
+2. **Configurar o Banco de Dados:** Execute os scripts da pasta `/scripts` no seu SQL Server.
+3. **Ajuste de Caminhos:** > **Nota:** Antes de executar a *stored procedure* `bronze.load_bronze`, certifique-se de atualizar os caminhos dos arquivos CSV nos comandos `BULK INSERT` para o diretório local onde você clonou este repositório.
+4. **Execução:** Execute `EXEC bronze.load_bronze` para iniciar a carga dos dados.
+
+---
+
 ## 👨‍💻 Sobre Mim
 
 Olá! Eu sou o **Pedro Tibúrcio**! 👋
