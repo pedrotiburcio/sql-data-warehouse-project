@@ -55,11 +55,11 @@ BEGIN
 			CASE WHEN UPPER(TRIM(cst_marital_status)) = 'S' THEN 'Single'
 				 WHEN UPPER(TRIM(cst_marital_status)) = 'M' THEN 'Married'
 				 ELSE 'n/a'
-			END cst_marital_status, -- Normalize marital status values to readable format
+			END cst_marital_status, -- Padronizar os valores de estado civil para um formato legível
 			CASE WHEN UPPER(TRIM(cst_gndr)) = 'F' THEN 'Female'
 				 WHEN UPPER(TRIM(cst_gndr)) = 'M' THEN 'Male'
 				 ELSE 'n/a'
-			END cst_gndr, -- Normalize gender values to readable format
+			END cst_gndr, -- Padronizar os valores de gênero para um formato legível
 			cst_create_date
 		FROM ( 
 			SELECT 
@@ -91,8 +91,8 @@ BEGIN
 
 		SELECT 
 			prd_id,
-			REPLACE(SUBSTRING(prd_key, 1, 5), '-', '_') AS cat_id, -- Extract category ID
-			SUBSTRING(prd_key, 7, LEN(prd_key)) AS prd_key, -- Extract product key
+			REPLACE(SUBSTRING(prd_key, 1, 5), '-', '_') AS cat_id, -- Extrair o ID da categoria
+			SUBSTRING(prd_key, 7, LEN(prd_key)) AS prd_key, -- Extrair a chave do produto
 			prd_nm,
 			ISNULL(prd_cost, 0) AS prd_cost,
 			CASE UPPER(TRIM(prd_line))
@@ -101,12 +101,12 @@ BEGIN
 				 WHEN 'S' THEN 'Other Sales'
 				 WHEN 'T' THEN 'Touring'
 				 ELSE 'n/a'
-			END AS prd_line, -- Map product line codes to descriptive values
+			END AS prd_line, -- Mapear códigos de linha de produtos para valores descritivos
 			CAST (prd_start_dt AS DATE) AS prd_start_dt,
 			CAST (
 				LEAD(prd_start_dt) OVER(PARTITION BY prd_key ORDER BY prd_start_dt) - 1 
 				AS DATE
-			) AS prd_end_dt -- Calculate end date as one day before the next start date
+			) AS prd_end_dt -- Calcular a data de término como um dia antes da próxima data de início
 		FROM DataWarehouse.bronze.crm_prd_info
 		SET @end_time = GETDATE()
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -170,17 +170,17 @@ BEGIN
 		)
 
 		SELECT
-			CASE WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, LEN(cid)) -- Remove 'NAS' prefix if present
+			CASE WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, LEN(cid)) -- Remover o prefixo 'NAS' caso esteja presente
 				 ELSE cid
 			END AS cid,
 			CASE WHEN bdate > GETDATE() THEN NULL
 				 ELSE bdate
-			END AS bdate, -- Set future birthdates to NULL
+			END AS bdate, -- Definir datas de nascimento futuras como NULL
 			CASE 
 				WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
 				WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
 				ELSE 'n/a'
-			END AS gen -- Normalize gender values and handle unknown cases
+			END AS gen -- Padronizar os valores de gênero e tratar casos desconhecidos
 		FROM bronze.erp_cust_az12
 		SET @end_time = GETDATE()
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -196,13 +196,13 @@ BEGIN
 			cntry
 		)
 		SELECT 
-			REPLACE(cid, '-', '') AS cid, -- Handle invalid values
+			REPLACE(cid, '-', '') AS cid, -- Tratar valores inválidos
 			CASE
 				WHEN TRIM(cntry) IN ('USA', 'US') THEN 'United States'
 				WHEN TRIM(cntry) = 'DE' THEN 'Germany'
 				WHEN TRIM(cntry) IS NULL OR cntry = '' THEN 'n/a'
 				ELSE TRIM(cntry)
-			END AS cntry -- Normalize and Handle missing or blank country codes
+			END AS cntry -- Padronizar e tratar códigos de país ausentes ou em branco
 		FROM bronze.erp_loc_a101;
 		SET @end_time = GETDATE()
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -238,7 +238,7 @@ BEGIN
 	END TRY
 	BEGIN CATCH
 		PRINT '============================================================'
-		PRINT 'ERROR OCCURED DURING LOADING SILVER LAYER'
+		PRINT 'ERROR OCCURRED DURING LOADING SILVER LAYER'
 		PRINT 'Error Message' + ERROR_MESSAGE();
 		PRINT 'Error Message' + CAST (ERROR_NUMBER() AS NVARCHAR);
 		PRINT 'Error Message' + CAST (ERROR_STATE() AS NVARCHAR);
