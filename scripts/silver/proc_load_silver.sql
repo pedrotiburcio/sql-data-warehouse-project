@@ -1,20 +1,21 @@
 /*
 ===============================================================================
-Stored Procedure: Load Silver Layer (Bronze -> Silver)
+Stored Procedure: Carregar Camada Silver (Bronze -> Silver)
 ===============================================================================
-Script Purpose:
-    This stored procedure performs the ETL (Extract, Transform, Load) process to 
-    populate the 'silver' schema tables from the 'bronze' schema.
-	Actions Performed:
-		- Truncates Silver tables.
-		- Inserts transformed and cleansed data from Bronze into Silver tables.
-		
-Parameters:
-    None. 
-	  This stored procedure does not accept any parameters or return any values.
+Objetivo do Script:
+    Esta stored procedure realiza o processo de ETL (Extração, Transformação e 
+    Carga) para popular as tabelas do esquema 'silver' a partir do esquema 'bronze'.
 
-Usage Example:
-    EXEC Silver.load_silver;
+    Ações Realizadas:
+        - Trunca (limpa) as tabelas Silver.
+        - Insere os dados transformados e limpos da Bronze nas tabelas Silver.
+        
+Parâmetros:
+    Nenhum. 
+    Esta stored procedure não aceita parâmetros e não retorna valores.
+
+Exemplo de Uso:
+    EXEC silver.load_silver;
 ===============================================================================
 */
 
@@ -32,7 +33,7 @@ BEGIN
 		PRINT 'Loading CRM Tables';
 		PRINT '-------------------------------------------------';
 
-    -- Loading silver.crm_cust_info
+    -- Carregando silver.crm_cust_info
 		SET @start_time = GETDATE()
 		PRINT '>> Truncating table: silver.crm_cust_info';
 		TRUNCATE TABLE silver.crm_cust_info;
@@ -72,7 +73,7 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT' >> -------------'
 		
-    -- Loading silver.crm_prd_info
+    -- Carregando silver.crm_prd_info
 		SET @start_time = GETDATE()
 		PRINT '>> Truncating table: silver.crm_prd_info';
 		TRUNCATE TABLE silver.crm_prd_info;
@@ -111,7 +112,7 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT' >> -------------'
 
-    -- Loading silver.crm_sales_details
+    -- Carregando silver.crm_sales_details
 		SET @start_time = GETDATE()
 		PRINT '>> Truncating table: silver.crm_sales_details';
 		TRUNCATE TABLE silver.crm_sales_details;
@@ -157,7 +158,7 @@ BEGIN
 		PRINT 'Loading ERP Tables';
 		PRINT '-------------------------------------------------';
     
-    -- Loading silver.erp_cust_az12
+    -- Carregando silver.erp_cust_az12
 		SET @start_time = GETDATE()
 		PRINT '>> Truncating table: silver.erp_cust_az12';
 		TRUNCATE TABLE silver.erp_cust_az12;
@@ -185,7 +186,7 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT' >> -------------'
 
-    -- Loading silver.erp_loc_a101
+    -- Carregando silver.erp_loc_a101
 		SET @start_time = GETDATE()
 		PRINT '>> Truncating table: silver.erp_loc_a101';
 		TRUNCATE TABLE silver.erp_loc_a101;
@@ -207,7 +208,7 @@ BEGIN
 		PRINT '>> Load Duration: ' + CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT' >> -------------'
 
-    -- Loading silver.erp_px_cat_g1v2
+    -- Carregando silver.erp_px_cat_g1v2
 		SET @start_time = GETDATE()
 		PRINT '>> Truncating table: silver.erp_px_cat_g1v2';
 		TRUNCATE TABLE silver.erp_px_cat_g1v2;
