@@ -1,21 +1,21 @@
 /*
 ===============================================================================
-DDL Script: Create Gold Views
+Script DDL: Criar Views Gold
 ===============================================================================
-Script Purpose:
-    This script creates views for the Gold layer in the data warehouse. 
-    The Gold layer represents the final dimension and fact tables (Star Schema)
+Objetivo do Script:
+    Este script cria as views para a camada Gold no data warehouse. 
+    A camada Gold representa as tabelas finais de dimensão e fatos (Star Schema).
 
-    Each view performs transformations and combines data from the Silver layer 
-    to produce a clean, enriched, and business-ready dataset.
+    Cada view realiza transformações e combina dados da camada Silver 
+    para gerar um conjunto de dados limpo, enriquecido e pronto para o negócio.
 
-Usage:
-    - These views can be queried directly for analytics and reporting.
+Uso:
+    - Estas views podem ser consultadas diretamente para análise e relatórios.
 ===============================================================================
 */
 
 -- =============================================================================
--- Create Dimension: gold.dim_customers
+-- Criar Dimensão: gold.dim_customers
 -- =============================================================================
 IF OBJECT_ID('gold.dim_customers', 'V') IS NOT NULL
     DROP VIEW gold.dim_customers;
@@ -44,7 +44,7 @@ LEFT JOIN silver.erp_loc_a101 la
 GO
 
 -- =============================================================================
--- Create Dimension: gold.dim_products
+-- Criar Dimensão: gold.dim_products
 -- =============================================================================
 IF OBJECT_ID('gold.dim_products', 'V') IS NOT NULL
     DROP VIEW gold.dim_products;
@@ -70,7 +70,7 @@ WHERE pn.prd_end_dt IS NULL; -- Filter out all historical data
 GO
 
 -- =============================================================================
--- Create Fact Table: gold.fact_sales
+-- Criar Tabela Fato: gold.fact_sales
 -- =============================================================================
 IF OBJECT_ID('gold.fact_sales', 'V') IS NOT NULL
     DROP VIEW gold.fact_sales;
