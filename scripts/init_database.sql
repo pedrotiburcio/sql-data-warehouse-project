@@ -1,22 +1,24 @@
 /*
 =============================================================
-Create Database and Schemas
+Criar Banco de Dados e Esquemas (Schemas)
 =============================================================
-Script Purpose:
-    This script creates a new database named 'DataWarehouse' after checking if it already exists. 
-    If the database exists, it is dropped and recreated. Additionally, the script sets up three schemas 
-    within the database: 'bronze', 'silver', and 'gold'.
+Objetivo do Script:
+    Este script cria um novo banco de dados chamado 'DataWarehouse' após verificar 
+    se ele já existe. Se o banco de dados existir, ele será excluído e recriado. 
+    Além disso, o script configura três esquemas dentro do banco de dados: 
+    'bronze', 'silver' e 'gold'.
 	
-WARNING:
-    Running this script will drop the entire 'DataWarehouse' database if it exists. 
-    All data in the database will be permanently deleted. Proceed with caution 
-    and ensure you have proper backups before running this script.
+AVISO:
+    A execução deste script excluirá todo o banco de dados 'DataWarehouse', 
+    caso ele exista. Todos os dados no banco de dados serão permanentemente 
+    apagados. Prossiga com cautela e certifique-se de ter backups adequados 
+    antes de executar este script.
 */
 
 USE master;
 GO
 
--- Drop and recreate the 'DataWarehouse' database
+-- Excluir e recriar o banco de dados 'DataWarehouse'
 IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'DataWarehouse')
 BEGIN
 	ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -24,14 +26,14 @@ BEGIN
 END;
 GO
 
--- Create the 'DataWarehouse' database
+-- Criar o banco de dados 'DataWarehouse'
 CREATE DATABASE DataWarehouse;
 GO
 
 USE DataWarehouse;
 GO
 
--- Create Schemas
+-- Criar Schemas
 CREATE SCHEMA bronze;
 GO
 
